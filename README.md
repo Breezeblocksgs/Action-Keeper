@@ -2,6 +2,8 @@
 
 Compact, player-only action tracker for Foundry VTT combat (Main Action / Bonus Action / Reaction / Movement). Manual toggles only — no automation, no reads of D&D5e item/actor data.
 
+Author: Pedro Henrique Cesar Godoi Braz ([github.com/pedrocgb](https://github.com/pedrocgb/))
+
 Targets **Foundry VTT v14** (verified against the locally installed build: generation 14, build 367, stable) and **D&D5e 5.3.3** (verified installed system; module makes no dnd5e-specific calls).
 
 ## Install for local testing
@@ -9,7 +11,7 @@ Targets **Foundry VTT v14** (verified against the locally installed build: gener
 This repo is not inside Foundry's User Data directory. To test:
 
 ```bash
-ln -s "/home/pedrohcg/Área de trabalho/foundry-modules/Action Keeper" \
+ln -s "/home/pedrohcg/Área de trabalho/foundry-modules/action-keeper" \
       "/home/pedrohcg/.local/share/FoundryVTT/Data/modules/action-keeper"
 ```
 
@@ -42,6 +44,5 @@ npm test
 ## Known limitations
 
 - Only unit tests for pure logic were executed. Full multi-client runtime behavior above has **not** been tested and must not be assumed correct until run.
-- `authors` is intentionally omitted from `module.json` (no author info was provided, and none was invented).
-- Not published; no release artifacts created.
+- Not published to Foundry's package listing; no release archive/manifest has been created yet.
 - All per-user settings use `scope: "client"` (browser `localStorage`), not `scope: "user"`. Verified in this build's own `common/documents/setting.mjs`: `scope: "user"` settings are stored as world `Setting` Documents, and *creating* one requires the `SETTINGS_MODIFY` permission — which regular Players don't have by default. That made every write silently fail permission for non-GM players. `client` scope has no such gate. Trade-off: tracker state is per-browser/device, not synced across devices for the same Foundry account.

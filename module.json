@@ -4,6 +4,14 @@
   "title": "Action Keeper",
   "description": "A compact, player-only action tracker that helps each player manually track Main Action, Bonus Action, Reaction, and Movement availability during combat. Does not automate action detection.",
   "version": "0.1.6",
+  "authors": [
+    {
+      "name": "Pedro Henrique Cesar Godoi Braz",
+      "email": "pedrohcg92@gmail.com",
+      "url": "https://github.com/pedrocgb/"
+    }
+  ],
+  "url": "https://github.com/pedrocgb/",
   "compatibility": {
     "minimum": "14",
     "verified": "14"
