@@ -1,4 +1,4 @@
-import { MODULE_ID, SETTINGS, GROUP_COUNT_SETTING, GROUPS } from "./constants.mjs";
+import { MODULE_ID, SETTINGS, GROUP_COUNT_SETTING, GROUPS, LANGUAGES, DEFAULT_LANGUAGE } from "./constants.mjs";
 import { validateCounts, validateState, validateMarker, resetState, toggleSlot, resizeGroup } from "./state.mjs";
 
 /**
@@ -76,4 +76,9 @@ export function getAutoClose() {
 
 export function getLabeledButtons() {
   return Boolean(game.settings.get(MODULE_ID, SETTINGS.LABELED_BUTTONS));
+}
+
+export function getLanguage() {
+  const raw = game.settings.get(MODULE_ID, SETTINGS.LANGUAGE);
+  return LANGUAGES.some((l) => l.code === raw) ? raw : DEFAULT_LANGUAGE;
 }

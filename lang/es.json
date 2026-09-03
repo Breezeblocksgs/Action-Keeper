@@ -1,0 +1,21 @@
+{
+  "ACTION_KEEPER": {
+    "PanelTitle": "Action Keeper",
+    "SceneControlTitle": "Alternar Action Keeper",
+    "ConfigureButton": "Configurar",
+    "NoActiveCombat": "Sin combate activo.",
+    "Available": "Disponible",
+    "Used": "Usado",
+    "GroupMain": "Acción Principal",
+    "GroupBonus": "Acción Adicional",
+    "GroupReaction": "Reacción",
+    "GroupMovement": "Movimiento",
+    "AutoOpen": "Abrir automáticamente al iniciar combate",
+    "AutoOpenHint": "Abre automáticamente el panel de Action Keeper cuando comienza el combate.",
+    "AutoClose": "Cerrar automáticamente al finalizar combate",
+    "AutoCloseHint": "Cierra automáticamente el panel de Action Keeper cuando termina el combate.",
+    "LabeledButtons": "Botones con texto",
+    "LabeledButtonsHint": "Muestra el icono y el texto Disponible/Usado en cada espacio. Si está desactivado, los espacios se muestran como círculos compactos rellenos/huecos.",
+    "Language": "Idioma"
+  }
+}

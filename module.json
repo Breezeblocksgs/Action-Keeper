@@ -3,7 +3,7 @@
   "type": "module",
   "title": "Action Keeper",
   "description": "A compact, player-only action tracker that helps each player manually track Main Action, Bonus Action, Reaction, and Movement availability during combat. Does not automate action detection.",
-  "version": "0.1.6",
+  "version": "0.2.0",
   "authors": [
     {
       "name": "Pedro Henrique Cesar Godoi Braz",
@@ -31,7 +31,11 @@
   "esmodules": ["scripts/main.mjs"],
   "styles": ["styles/action-keeper.css"],
   "languages": [
-    { "lang": "en", "name": "English", "path": "lang/en.json" }
+    { "lang": "en", "name": "English", "path": "lang/en.json" },
+    { "lang": "pt-BR", "name": "Português (Brasil)", "path": "lang/pt-BR.json" },
+    { "lang": "es", "name": "Español", "path": "lang/es.json" },
+    { "lang": "de", "name": "Deutsch", "path": "lang/de.json" },
+    { "lang": "ru", "name": "Русский", "path": "lang/ru.json" }
   ],
   "media": []
 }

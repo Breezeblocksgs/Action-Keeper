@@ -1,5 +1,6 @@
-import { MODULE_ID, GROUPS, GROUP_ICON, GROUP_LABEL_KEY, GROUP_COLOR, MIN_SLOTS, MAX_SLOTS } from "./constants.mjs";
+import { MODULE_ID, GROUPS, GROUP_ICON, GROUP_LABEL_KEY, GROUP_COLOR, MIN_SLOTS, MAX_SLOTS, LANGUAGES } from "./constants.mjs";
 import * as repository from "./state-repository.mjs";
+import { ensureLanguageLoaded, localize } from "./localization.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
@@ -33,6 +34,7 @@ export class ActionKeeperApp extends HandlebarsApplicationMixin(ApplicationV2) {
   };
 
   #settingsOpen = false;
+  #language = repository.getLanguage();
 
   /** Open the panel (creating the singleton instance if needed) and bring it to front. */
   static open() {
@@ -58,17 +60,25 @@ export class ActionKeeperApp extends HandlebarsApplicationMixin(ApplicationV2) {
     if (ActionKeeperApp.#instance?.rendered) ActionKeeperApp.#instance.close();
   }
 
+  /** Action Keeper's own localized window title, independent of Foundry's core language. @override */
+  get title() {
+    return localize(this.#language, "ACTION_KEEPER.PanelTitle");
+  }
+
   /** @override */
   async _prepareContext(_options) {
+    this.#language = await ensureLanguageLoaded(repository.getLanguage());
+    const t = (key) => localize(this.#language, key);
+
     const marker = repository.getMarker();
     const hasActiveCombat = marker !== null;
     const counts = repository.getCounts();
     const state = repository.getState();
 
     const groups = GROUPS.map((key) => {
-      const groupLabel = game.i18n.localize(GROUP_LABEL_KEY[key]);
+      const groupLabel = t(GROUP_LABEL_KEY[key]);
       const slots = state[key].map((available, index) => {
-        const statusLabel = game.i18n.localize(available ? "ACTION_KEEPER.Available" : "ACTION_KEEPER.Used");
+        const statusLabel = t(available ? "ACTION_KEEPER.Available" : "ACTION_KEEPER.Used");
         return {
           index,
           available,
@@ -81,19 +91,32 @@ export class ActionKeeperApp extends HandlebarsApplicationMixin(ApplicationV2) {
       return { key, label: groupLabel, icon: GROUP_ICON[key], color: GROUP_COLOR[key], slots, countOptions };
     });
 
+    const languages = LANGUAGES.map((l) => ({ ...l, selected: l.code === this.#language }));
+
     return {
       hasActiveCombat,
       groups,
+      languages,
       settingsOpen: this.#settingsOpen,
       autoOpen: repository.getAutoOpen(),
       autoClose: repository.getAutoClose(),
       labeledButtons: repository.getLabeledButtons(),
+      i18n: {
+        noActiveCombat: t("ACTION_KEEPER.NoActiveCombat"),
+        configureButton: t("ACTION_KEEPER.ConfigureButton"),
+        autoOpen: t("ACTION_KEEPER.AutoOpen"),
+        autoClose: t("ACTION_KEEPER.AutoClose"),
+        labeledButtons: t("ACTION_KEEPER.LabeledButtons"),
+        language: t("ACTION_KEEPER.Language"),
+      },
     };
   }
 
   /** @override */
   _onRender(context, options) {
     super._onRender(context, options);
+    this._updateFrame({ window: { title: this.title } });
+
     for (const select of this.element.querySelectorAll("select[data-setting='count']")) {
       select.addEventListener("change", (event) => {
         const group = event.currentTarget.dataset.group;
@@ -103,6 +126,14 @@ export class ActionKeeperApp extends HandlebarsApplicationMixin(ApplicationV2) {
           .catch((err) => console.warn("Action Keeper |", "failed to change slot count", err));
       });
     }
+
+    const languageSelect = this.element.querySelector("select[data-setting='language']");
+    languageSelect?.addEventListener("change", (event) => {
+      game.settings
+        .set(MODULE_ID, "language", event.currentTarget.value)
+        .then(() => this.render())
+        .catch((err) => console.warn("Action Keeper |", "failed to change language", err));
+    });
   }
 
   /** @override */

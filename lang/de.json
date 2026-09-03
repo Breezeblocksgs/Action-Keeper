@@ -1,0 +1,21 @@
+{
+  "ACTION_KEEPER": {
+    "PanelTitle": "Action Keeper",
+    "SceneControlTitle": "Action Keeper umschalten",
+    "ConfigureButton": "Konfigurieren",
+    "NoActiveCombat": "Kein aktiver Kampf.",
+    "Available": "Verfügbar",
+    "Used": "Verbraucht",
+    "GroupMain": "Hauptaktion",
+    "GroupBonus": "Bonusaktion",
+    "GroupReaction": "Reaktion",
+    "GroupMovement": "Bewegung",
+    "AutoOpen": "Bei Kampfbeginn automatisch öffnen",
+    "AutoOpenHint": "Öffnet das Action-Keeper-Fenster automatisch, wenn ein Kampf beginnt.",
+    "AutoClose": "Bei Kampfende automatisch schließen",
+    "AutoCloseHint": "Schließt das Action-Keeper-Fenster automatisch, wenn der Kampf endet.",
+    "LabeledButtons": "Beschriftete Schaltflächen",
+    "LabeledButtonsHint": "Zeigt Symbol und Text (Verfügbar/Verbraucht) für jeden Slot. Wenn deaktiviert, werden Slots als kompakte gefüllte/leere Kreise dargestellt.",
+    "Language": "Sprache"
+  }
+}

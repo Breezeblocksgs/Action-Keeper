@@ -1,6 +1,6 @@
 <div class="action-keeper-panel">
   {{#unless hasActiveCombat}}
-    <p class="action-keeper-empty">{{localize "ACTION_KEEPER.NoActiveCombat"}}</p>
+    <p class="action-keeper-empty">{{i18n.noActiveCombat}}</p>
   {{/unless}}
 
   <div class="action-keeper-groups">
@@ -36,9 +36,9 @@
             class="action-keeper-settings-toggle"
             data-action="toggleSettingsPanel"
             aria-expanded="{{settingsOpen}}"
-            aria-label="{{localize 'ACTION_KEEPER.ConfigureButton'}}">
+            aria-label="{{i18n.configureButton}}">
       <i class="fa-solid fa-gear" aria-hidden="true"></i>
-      {{localize "ACTION_KEEPER.ConfigureButton"}}
+      {{i18n.configureButton}}
     </button>
   </div>
 
@@ -57,17 +57,26 @@
 
       <label class="action-keeper-checkbox-field">
         <input type="checkbox" data-action="toggleAutoOpen" {{#if autoOpen}}checked{{/if}}>
-        {{localize "ACTION_KEEPER.AutoOpen"}}
+        {{i18n.autoOpen}}
       </label>
 
       <label class="action-keeper-checkbox-field">
         <input type="checkbox" data-action="toggleAutoClose" {{#if autoClose}}checked{{/if}}>
-        {{localize "ACTION_KEEPER.AutoClose"}}
+        {{i18n.autoClose}}
       </label>
 
       <label class="action-keeper-checkbox-field">
         <input type="checkbox" data-action="toggleLabeledButtons" {{#if labeledButtons}}checked{{/if}}>
-        {{localize "ACTION_KEEPER.LabeledButtons"}}
+        {{i18n.labeledButtons}}
+      </label>
+
+      <label class="action-keeper-count-field">
+        <span>{{i18n.language}}</span>
+        <select data-setting="language">
+          {{#each languages as |lang|}}
+            <option value="{{lang.code}}" {{#if lang.selected}}selected{{/if}}>{{lang.flag}} {{lang.nativeName}}</option>
+          {{/each}}
+        </select>
       </label>
     </div>
   {{/if}}

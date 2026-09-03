@@ -26,6 +26,10 @@ npm test
 
 18 tests cover `scripts/state.mjs` (slot/count logic) and `scripts/combat-transition.mjs` (reset/idempotency logic), with no Foundry runtime required. All 18 currently pass.
 
+## Panel language
+
+Action Keeper's own panel content (labels, statuses, settings) has its own language switcher inside the panel's Configure section — English (US), Português (Brasil), Español, Deutsch, Русский — independent of Foundry's core language and instant (no reload). This is separate from `module.json`'s `languages` declaration, which is Foundry's own localization mechanism and only affects things Foundry itself renders for this module (currently just the Scene Controls tooltip, which follows Foundry's core language setting, not the in-panel switcher).
+
 ## Manual runtime test matrix (not yet executed — requires a running world with 2+ clients)
 
 - [ ] GM sees no panel, no Scene Control button, no notifications

@@ -24,6 +24,16 @@ export const GROUP_COLOR = {
   movement: "#4dabf7",
 };
 
+/** Action Keeper's own UI language, independent of Foundry's core language setting so it can switch instantly. */
+export const LANGUAGES = [
+  { code: "en", flag: "🇺🇸", nativeName: "English (US)" },
+  { code: "pt-BR", flag: "🇧🇷", nativeName: "Português (Brasil)" },
+  { code: "ru", flag: "🇷🇺", nativeName: "Русский" },
+  { code: "es", flag: "🇪🇸", nativeName: "Español" },
+  { code: "de", flag: "🇩🇪", nativeName: "Deutsch" },
+];
+export const DEFAULT_LANGUAGE = "en";
+
 export const MIN_SLOTS = 1;
 export const MAX_SLOTS = 5;
 
@@ -42,6 +52,7 @@ export const SETTINGS = {
   AUTO_OPEN: "autoOpenOnCombatStart",
   AUTO_CLOSE: "autoCloseOnCombatEnd",
   LABELED_BUTTONS: "labeledButtons",
+  LANGUAGE: "language",
   STATE: "actionState",
   MARKER: "combatMarker",
 };

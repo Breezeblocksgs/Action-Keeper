@@ -1,4 +1,4 @@
-import { MODULE_ID, SETTINGS, DEFAULT_COUNTS } from "./constants.mjs";
+import { MODULE_ID, SETTINGS, DEFAULT_COUNTS, DEFAULT_LANGUAGE } from "./constants.mjs";
 
 /** Register all Action Keeper settings. Must run during `init`. */
 export function registerSettings() {
@@ -42,6 +42,14 @@ export function registerSettings() {
     config: false,
     type: Boolean,
     default: true,
+  });
+
+  game.settings.register(MODULE_ID, SETTINGS.LANGUAGE, {
+    name: "ACTION_KEEPER.Language",
+    scope: "client",
+    config: false,
+    type: String,
+    default: DEFAULT_LANGUAGE,
   });
 
   game.settings.register(MODULE_ID, SETTINGS.STATE, {

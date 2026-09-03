@@ -1,0 +1,21 @@
+{
+  "ACTION_KEEPER": {
+    "PanelTitle": "Action Keeper",
+    "SceneControlTitle": "Показать/скрыть Action Keeper",
+    "ConfigureButton": "Настройки",
+    "NoActiveCombat": "Нет активного боя.",
+    "Available": "Доступно",
+    "Used": "Использовано",
+    "GroupMain": "Основное действие",
+    "GroupBonus": "Бонусное действие",
+    "GroupReaction": "Реакция",
+    "GroupMovement": "Движение",
+    "AutoOpen": "Открывать автоматически при начале боя",
+    "AutoOpenHint": "Автоматически открывает панель Action Keeper при начале боя.",
+    "AutoClose": "Закрывать автоматически при окончании боя",
+    "AutoCloseHint": "Автоматически закрывает панель Action Keeper по окончании боя.",
+    "LabeledButtons": "Кнопки с подписями",
+    "LabeledButtonsHint": "Показывать значок и текст «Доступно/Использовано» на каждом слоте. Если отключено, слоты отображаются в виде компактных закрашенных/пустых кружков.",
+    "Language": "Язык"
+  }
+}

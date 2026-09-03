@@ -15,6 +15,7 @@
     "AutoClose": "Auto-close on combat end",
     "AutoCloseHint": "Automatically close the Action Keeper panel when combat ends.",
     "LabeledButtons": "Labeled buttons",
-    "LabeledButtonsHint": "Show the icon and Available/Used text on each slot. When off, slots render as compact filled/hollow circles."
+    "LabeledButtonsHint": "Show the icon and Available/Used text on each slot. When off, slots render as compact filled/hollow circles.",
+    "Language": "Language"
   }
 }
