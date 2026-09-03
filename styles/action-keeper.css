@@ -1,0 +1,133 @@
+#action-keeper-panel .window-content {
+  padding: 0.5rem;
+}
+
+.action-keeper-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.action-keeper-empty {
+  margin: 0;
+  padding: 0.25rem 0.5rem;
+  font-style: italic;
+  opacity: 0.8;
+  text-align: center;
+}
+
+.action-keeper-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.action-keeper-group {
+  margin: 0;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid var(--color-border-light-tertiary, #7a7971);
+  border-radius: 4px;
+}
+
+.action-keeper-group legend {
+  padding: 0 0.25rem;
+  font-size: var(--font-size-12, 12px);
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.action-keeper-group legend i {
+  color: var(--ak-color, inherit);
+}
+
+.action-keeper-slots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.action-keeper-slot {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--color-border-light-tertiary, #7a7971);
+  border-radius: 4px;
+  cursor: pointer;
+  background: var(--color-bg-option, rgba(0, 0, 0, 0.05));
+  color: inherit;
+  font-size: var(--font-size-13, 13px);
+  line-height: 1.2;
+}
+
+.action-keeper-slot:focus-visible {
+  outline: 2px solid var(--color-cool-4, #ff6400);
+  outline-offset: 1px;
+}
+
+.action-keeper-slot.is-available {
+  border-color: var(--ak-color, #2f9e44);
+  color: var(--ak-color, #2f9e44);
+}
+
+.action-keeper-slot.is-used {
+  opacity: 0.55;
+  text-decoration: line-through;
+  border-style: dashed;
+}
+
+.action-keeper-slot:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+  text-decoration: none;
+}
+
+/* Compact mode: a plain circle, filled when available, hollow when used. No icon or text. */
+.action-keeper-slot.is-compact {
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  border-radius: 50%;
+  border-width: 2px;
+  gap: 0;
+}
+
+.action-keeper-slot.is-compact.is-available {
+  background: var(--ak-color, #2f9e44);
+  border-color: var(--ak-color, #2f9e44);
+}
+
+.action-keeper-slot.is-compact.is-used {
+  background: transparent;
+  border-color: var(--ak-color, #2f9e44);
+  text-decoration: none;
+}
+
+.action-keeper-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.action-keeper-settings-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: var(--font-size-12, 12px);
+}
+
+.action-keeper-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.4rem 0.5rem;
+  border-top: 1px solid var(--color-border-light-tertiary, #7a7971);
+}
+
+.action-keeper-count-field,
+.action-keeper-checkbox-field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: var(--font-size-12, 12px);
+}

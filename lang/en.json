@@ -1,0 +1,20 @@
+{
+  "ACTION_KEEPER": {
+    "PanelTitle": "Action Keeper",
+    "SceneControlTitle": "Toggle Action Keeper",
+    "ConfigureButton": "Configure",
+    "NoActiveCombat": "No active combat.",
+    "Available": "Available",
+    "Used": "Used",
+    "GroupMain": "Main Action",
+    "GroupBonus": "Bonus Action",
+    "GroupReaction": "Reaction",
+    "GroupMovement": "Movement",
+    "AutoOpen": "Auto-open on combat start",
+    "AutoOpenHint": "Automatically open the Action Keeper panel when combat begins.",
+    "AutoClose": "Auto-close on combat end",
+    "AutoCloseHint": "Automatically close the Action Keeper panel when combat ends.",
+    "LabeledButtons": "Labeled buttons",
+    "LabeledButtonsHint": "Show the icon and Available/Used text on each slot. When off, slots render as compact filled/hollow circles."
+  }
+}

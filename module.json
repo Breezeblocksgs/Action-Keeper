@@ -1,0 +1,29 @@
+{
+  "id": "action-keeper",
+  "type": "module",
+  "title": "Action Keeper",
+  "description": "A compact, player-only action tracker that helps each player manually track Main Action, Bonus Action, Reaction, and Movement availability during combat. Does not automate action detection.",
+  "version": "0.1.6",
+  "compatibility": {
+    "minimum": "14",
+    "verified": "14"
+  },
+  "relationships": {
+    "systems": [
+      {
+        "id": "dnd5e",
+        "type": "system",
+        "compatibility": {
+          "minimum": "5.3.3",
+          "verified": "5.3.3"
+        }
+      }
+    ]
+  },
+  "esmodules": ["scripts/main.mjs"],
+  "styles": ["styles/action-keeper.css"],
+  "languages": [
+    { "lang": "en", "name": "English", "path": "lang/en.json" }
+  ],
+  "media": []
+}
