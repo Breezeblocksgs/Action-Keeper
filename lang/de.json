@@ -3,7 +3,8 @@
     "PanelTitle": "Action Keeper",
     "SceneControlTitle": "Action Keeper umschalten",
     "ConfigureButton": "Konfigurieren",
-    "NoActiveCombat": "Kein aktiver Kampf.",
+    "NoTokenSelected": "Kein Token ausgewählt.",
+    "NotInCombat": "Dieses Token nimmt nicht am aktuellen Kampf teil.",
     "Available": "Verfügbar",
     "Used": "Verbraucht",
     "GroupMain": "Hauptaktion",
@@ -16,6 +17,7 @@
     "AutoCloseHint": "Schließt das Action-Keeper-Fenster automatisch, wenn der Kampf endet.",
     "LabeledButtons": "Beschriftete Schaltflächen",
     "LabeledButtonsHint": "Zeigt Symbol und Text (Verfügbar/Verbraucht) für jeden Slot. Wenn deaktiviert, werden Slots als kompakte gefüllte/leere Kreise dargestellt.",
-    "Language": "Sprache"
+    "Language": "Sprache",
+    "LanguageHint": "Panel-Sprache für alle Spieler (Englisch, Portugiesisch, Spanisch, Deutsch, Russisch)."
   }
 }

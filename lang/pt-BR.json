@@ -3,7 +3,8 @@
     "PanelTitle": "Action Keeper",
     "SceneControlTitle": "Alternar Action Keeper",
     "ConfigureButton": "Configurar",
-    "NoActiveCombat": "Nenhum combate ativo.",
+    "NoTokenSelected": "Nenhum token selecionado.",
+    "NotInCombat": "Este token não está participando do combate atual.",
     "Available": "Disponível",
     "Used": "Usado",
     "GroupMain": "Ação Principal",
@@ -16,6 +17,7 @@
     "AutoCloseHint": "Fecha automaticamente o painel do Action Keeper quando o combate termina.",
     "LabeledButtons": "Botões com texto",
     "LabeledButtonsHint": "Mostra o ícone e o texto Disponível/Usado em cada espaço. Quando desativado, os espaços aparecem como círculos compactos preenchidos/vazios.",
-    "Language": "Idioma"
+    "Language": "Idioma",
+    "LanguageHint": "Idioma do painel para todos os jogadores (Inglês, Português, Espanhol, Alemão, Russo)."
   }
 }

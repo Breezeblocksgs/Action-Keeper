@@ -1,32 +1,54 @@
-import * as repository from "./state-repository.mjs";
-import { planCombatUpdate, planReconcile } from "./combat-transition.mjs";
+import * as tokenState from "./token-state.mjs";
+import { getAutoOpen, getAutoClose } from "./settings.mjs";
+import { planCombatUpdate } from "./combat-transition.mjs";
 import { ActionKeeperApp } from "./action-keeper-app.mjs";
+import { getActiveTokenDocument, setActiveToken, pickTokenForCombatStart, registerActiveTokenHooks } from "./active-token.mjs";
 
 function log(...args) {
-  console.log(`Action Keeper |`, ...args);
+  console.log("Action Keeper |", ...args);
 }
 
 function warn(...args) {
-  console.warn(`Action Keeper |`, ...args);
+  console.warn("Action Keeper |", ...args);
 }
 
-/** Non-GM only: react to committed Combat updates (round start/change). */
+/**
+ * Token flags are shared Documents: every authorized client (the owning player, and the GM, since
+ * GM owns every token) independently computes and writes the same reset for a given round. This is
+ * safe because the reset payload is deterministic (all slots become available), so redundant writes
+ * converge to the same value — no single-writer election needed.
+ * @returns {Promise<boolean>} whether any reset performed was a combat-start transition
+ */
+async function resetOwnedCombatantTokens(combat) {
+  let isStart = false;
+  for (const combatant of combat.combatants) {
+    const token = combatant.token;
+    if (!token || !tokenState.isOwnedByCurrentUser(token)) continue;
+
+    const marker = tokenState.getMarker(token);
+    const plan = planCombatUpdate(marker, combat.id, combat.round);
+    if (!plan.shouldReset) continue;
+
+    await tokenState.resetAll(token);
+    await tokenState.setMarker(token, plan.marker);
+    isStart = isStart || plan.isStart;
+    log(plan.isStart ? `combat started, reset "${token.name}"` : `new round, reset "${token.name}"`, plan.marker);
+  }
+  return isStart;
+}
+
 async function onUpdateCombat(combat, changed, _options, _userId) {
   try {
-    if (game.user.isGM) return;
     if (!("round" in changed)) return;
     if (!combat.started) return;
 
-    const marker = repository.getMarker();
-    const plan = planCombatUpdate(marker, combat.id, combat.round);
-    if (!plan.shouldReset) return;
+    const isStart = await resetOwnedCombatantTokens(combat);
 
-    await repository.resetAll();
-    await repository.setMarker(plan.marker);
-    log(plan.isStart ? "combat started, tracker reset" : "new round, tracker reset", plan.marker);
-
-    if (plan.isStart && repository.getAutoOpen()) {
-      ActionKeeperApp.open();
+    if (isStart) {
+      const token = pickTokenForCombatStart();
+      if (token) setActiveToken(token);
+      if (getAutoOpen()) ActionKeeperApp.open();
+      else ActionKeeperApp.refreshIfOpen();
     } else {
       ActionKeeperApp.refreshIfOpen();
     }
@@ -35,48 +57,37 @@ async function onUpdateCombat(combat, changed, _options, _userId) {
   }
 }
 
-/** Non-GM only: react to committed Combat deletion (covers Combat.endCombat() and manual deletion). */
-async function onDeleteCombat(combat, _options, _userId) {
+function onDeleteCombat(_combat, _options, _userId) {
   try {
-    if (game.user.isGM) return;
-    const marker = repository.getMarker();
-    if (!marker || marker.combatId !== combat.id) return;
-
-    await repository.setMarker(null);
-    log("combat ended, tracker marked inactive");
-
-    if (repository.getAutoClose()) ActionKeeperApp.closeIfOpen();
+    if (getAutoClose()) ActionKeeperApp.closeIfOpen();
     else ActionKeeperApp.refreshIfOpen();
   } catch (err) {
     warn("failed to process deleteCombat", err);
   }
 }
 
-/** Non-GM only: reconcile stored state with the active Combat at `ready` (reload/reconnect). */
 async function reconcileOnReady() {
   try {
-    if (game.user.isGM) return;
-
     const active = game.combats?.find((c) => c.started) ?? null;
-    const marker = repository.getMarker();
-    const plan = planReconcile(marker, active ? { id: active.id, round: active.round } : null);
-
-    if (plan.marker === null && marker !== null) {
-      await repository.setMarker(null);
-      return;
-    }
-    if (!plan.shouldReset) return;
-
-    await repository.resetAll();
-    await repository.setMarker(plan.marker);
-    log("reconciled tracker with active combat on ready", plan.marker);
+    if (!active) return;
+    await resetOwnedCombatantTokens(active);
   } catch (err) {
     warn("failed to reconcile on ready", err);
   }
 }
 
+function onUpdateToken(tokenDoc, changed) {
+  const active = getActiveTokenDocument();
+  if (!active || active.id !== tokenDoc.id) return;
+  if ("flags" in changed || "name" in changed || "texture" in changed) ActionKeeperApp.refreshIfOpen();
+}
+
 export function registerCombatHooks() {
   Hooks.on("updateCombat", onUpdateCombat);
   Hooks.on("deleteCombat", onDeleteCombat);
+  Hooks.on("updateToken", onUpdateToken);
   Hooks.once("ready", reconcileOnReady);
+
+  registerActiveTokenHooks();
+  Hooks.on("controlToken", () => ActionKeeperApp.refreshIfOpen());
 }

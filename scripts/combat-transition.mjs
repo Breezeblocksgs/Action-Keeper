@@ -18,19 +18,3 @@ export function planCombatUpdate(marker, combatId, round) {
   const isStart = !marker || marker.combatId !== combatId;
   return { shouldReset: true, isStart, marker: { combatId, round } };
 }
-
-/**
- * Decide whether a ready-time reconciliation should reset the local tracker.
- * @param {{combatId: string, round: number}|null} marker
- * @param {{id: string, round: number}|null} activeCombat  The currently active, started Combat, or null.
- * @returns {{shouldReset: boolean, marker: {combatId: string, round: number}|null}}
- */
-export function planReconcile(marker, activeCombat) {
-  if (!activeCombat) {
-    return { shouldReset: false, marker: null };
-  }
-  if (marker && marker.combatId === activeCombat.id && marker.round === activeCombat.round) {
-    return { shouldReset: false, marker };
-  }
-  return { shouldReset: true, marker: { combatId: activeCombat.id, round: activeCombat.round } };
-}

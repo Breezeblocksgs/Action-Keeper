@@ -1,11 +1,14 @@
-import { MODULE_ID, GROUPS, GROUP_ICON, GROUP_LABEL_KEY, GROUP_COLOR, MIN_SLOTS, MAX_SLOTS, LANGUAGES } from "./constants.mjs";
-import * as repository from "./state-repository.mjs";
+import { MODULE_ID, GROUPS, GROUP_ICON, GROUP_LABEL_KEY, GROUP_COLOR, MIN_SLOTS, MAX_SLOTS } from "./constants.mjs";
+import * as tokenState from "./token-state.mjs";
+import { getLabeledButtons, getLanguage } from "./settings.mjs";
 import { ensureLanguageLoaded, localize } from "./localization.mjs";
+import { getActiveTokenDocument } from "./active-token.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 /**
- * The Action Keeper panel. One instance per client. Non-GM users only.
+ * The Action Keeper panel. One instance per client, tracking whichever token this client
+ * currently has active (see active-token.mjs). Available to GM and Players alike.
  */
 export class ActionKeeperApp extends HandlebarsApplicationMixin(ApplicationV2) {
   static #instance = null;
@@ -23,9 +26,6 @@ export class ActionKeeperApp extends HandlebarsApplicationMixin(ApplicationV2) {
     actions: {
       toggleSlot: ActionKeeperApp.#onToggleSlot,
       toggleSettingsPanel: ActionKeeperApp.#onToggleSettingsPanel,
-      toggleAutoOpen: ActionKeeperApp.#onToggleAutoOpen,
-      toggleAutoClose: ActionKeeperApp.#onToggleAutoClose,
-      toggleLabeledButtons: ActionKeeperApp.#onToggleLabeledButtons,
     },
   };
 
@@ -34,11 +34,11 @@ export class ActionKeeperApp extends HandlebarsApplicationMixin(ApplicationV2) {
   };
 
   #settingsOpen = false;
-  #language = repository.getLanguage();
+  #language = getLanguage();
+  #tokenName = null;
 
   /** Open the panel (creating the singleton instance if needed) and bring it to front. */
   static open() {
-    if (game.user.isGM) return null;
     ActionKeeperApp.#instance ??= new ActionKeeperApp();
     ActionKeeperApp.#instance.render(true);
     return ActionKeeperApp.#instance;
@@ -46,7 +46,6 @@ export class ActionKeeperApp extends HandlebarsApplicationMixin(ApplicationV2) {
 
   /** Toggle: close if open, otherwise open. */
   static toggle() {
-    if (game.user.isGM) return;
     if (ActionKeeperApp.#instance?.rendered) ActionKeeperApp.#instance.close();
     else ActionKeeperApp.open();
   }
@@ -62,18 +61,38 @@ export class ActionKeeperApp extends HandlebarsApplicationMixin(ApplicationV2) {
 
   /** Action Keeper's own localized window title, independent of Foundry's core language. @override */
   get title() {
-    return localize(this.#language, "ACTION_KEEPER.PanelTitle");
+    const base = localize(this.#language, "ACTION_KEEPER.PanelTitle");
+    return this.#tokenName ? `${base} — ${this.#tokenName}` : base;
+  }
+
+  /** The active token, only if it's actually usable by the current user (GM, or the owning player). */
+  #getUsableToken() {
+    const token = getActiveTokenDocument();
+    if (!token) return null;
+    return game.user.isGM || tokenState.isOwnedByCurrentUser(token) ? token : null;
   }
 
   /** @override */
   async _prepareContext(_options) {
-    this.#language = await ensureLanguageLoaded(repository.getLanguage());
+    this.#language = await ensureLanguageLoaded(getLanguage());
     const t = (key) => localize(this.#language, key);
 
-    const marker = repository.getMarker();
-    const hasActiveCombat = marker !== null;
-    const counts = repository.getCounts();
-    const state = repository.getState();
+    const token = this.#getUsableToken();
+    this.#tokenName = token?.name ?? null;
+    const labeledButtons = getLabeledButtons();
+
+    if (!token) {
+      return {
+        hasToken: false,
+        labeledButtons,
+        settingsOpen: this.#settingsOpen,
+        i18n: { noToken: t("ACTION_KEEPER.NoTokenSelected") },
+      };
+    }
+
+    const inCombat = Boolean(game.combats?.active?.combatants?.some((c) => c.tokenId === token.id));
+    const counts = tokenState.getCounts(token);
+    const state = tokenState.getState(token);
 
     const groups = GROUPS.map((key) => {
       const groupLabel = t(GROUP_LABEL_KEY[key]);
@@ -91,23 +110,16 @@ export class ActionKeeperApp extends HandlebarsApplicationMixin(ApplicationV2) {
       return { key, label: groupLabel, icon: GROUP_ICON[key], color: GROUP_COLOR[key], slots, countOptions };
     });
 
-    const languages = LANGUAGES.map((l) => ({ ...l, selected: l.code === this.#language }));
-
     return {
-      hasActiveCombat,
+      hasToken: true,
+      inCombat,
+      tokenHeader: { name: token.name, img: token.texture?.src ?? "" },
       groups,
-      languages,
+      labeledButtons,
       settingsOpen: this.#settingsOpen,
-      autoOpen: repository.getAutoOpen(),
-      autoClose: repository.getAutoClose(),
-      labeledButtons: repository.getLabeledButtons(),
       i18n: {
-        noActiveCombat: t("ACTION_KEEPER.NoActiveCombat"),
+        notInCombat: t("ACTION_KEEPER.NotInCombat"),
         configureButton: t("ACTION_KEEPER.ConfigureButton"),
-        autoOpen: t("ACTION_KEEPER.AutoOpen"),
-        autoClose: t("ACTION_KEEPER.AutoClose"),
-        labeledButtons: t("ACTION_KEEPER.LabeledButtons"),
-        language: t("ACTION_KEEPER.Language"),
       },
     };
   }
@@ -117,23 +129,17 @@ export class ActionKeeperApp extends HandlebarsApplicationMixin(ApplicationV2) {
     super._onRender(context, options);
     this._updateFrame({ window: { title: this.title } });
 
+    const token = this.#getUsableToken();
     for (const select of this.element.querySelectorAll("select[data-setting='count']")) {
       select.addEventListener("change", (event) => {
+        if (!token) return;
         const group = event.currentTarget.dataset.group;
-        repository
-          .setCount(group, event.currentTarget.value)
+        tokenState
+          .setCount(token, group, event.currentTarget.value)
           .then(() => this.render())
           .catch((err) => console.warn("Action Keeper |", "failed to change slot count", err));
       });
     }
-
-    const languageSelect = this.element.querySelector("select[data-setting='language']");
-    languageSelect?.addEventListener("change", (event) => {
-      game.settings
-        .set(MODULE_ID, "language", event.currentTarget.value)
-        .then(() => this.render())
-        .catch((err) => console.warn("Action Keeper |", "failed to change language", err));
-    });
   }
 
   /** @override */
@@ -143,10 +149,12 @@ export class ActionKeeperApp extends HandlebarsApplicationMixin(ApplicationV2) {
   }
 
   static #onToggleSlot(_event, target) {
+    const token = this.#getUsableToken();
+    if (!token) return;
     const group = target.dataset.group;
     const index = Number(target.dataset.index);
-    repository
-      .toggle(group, index)
+    tokenState
+      .toggle(token, group, index)
       .then(() => this.render())
       .catch((err) => console.warn("Action Keeper |", "failed to toggle slot", err));
   }
@@ -154,24 +162,5 @@ export class ActionKeeperApp extends HandlebarsApplicationMixin(ApplicationV2) {
   static #onToggleSettingsPanel() {
     this.#settingsOpen = !this.#settingsOpen;
     this.render();
-  }
-
-  static #onToggleAutoOpen(_event, target) {
-    game.settings.set(MODULE_ID, "autoOpenOnCombatStart", target.checked).catch((err) =>
-      console.warn("Action Keeper |", "failed to save auto-open setting", err),
-    );
-  }
-
-  static #onToggleAutoClose(_event, target) {
-    game.settings.set(MODULE_ID, "autoCloseOnCombatEnd", target.checked).catch((err) =>
-      console.warn("Action Keeper |", "failed to save auto-close setting", err),
-    );
-  }
-
-  static #onToggleLabeledButtons(_event, target) {
-    game.settings
-      .set(MODULE_ID, "labeledButtons", target.checked)
-      .then(() => this.render())
-      .catch((err) => console.warn("Action Keeper |", "failed to save labeled-buttons setting", err));
   }
 }

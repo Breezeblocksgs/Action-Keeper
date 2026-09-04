@@ -1,9 +1,8 @@
 import { ActionKeeperApp } from "./action-keeper-app.mjs";
 
-/** Add the Action Keeper toggle tool to the Token control group, non-GM only. */
+/** Add the Action Keeper toggle tool to the Token control group. */
 export function registerSceneControls() {
   Hooks.on("getSceneControlButtons", (controls) => {
-    if (game.user.isGM) return;
     const tokenControl = controls.tokens;
     if (!tokenControl) return;
 

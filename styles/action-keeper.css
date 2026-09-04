@@ -16,6 +16,26 @@
   text-align: center;
 }
 
+.action-keeper-token-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.15rem 0.25rem;
+}
+
+.action-keeper-token-portrait {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 4px;
+  object-fit: cover;
+  border: 1px solid var(--color-border-light-tertiary, #7a7971);
+}
+
+.action-keeper-token-name {
+  font-weight: bold;
+  font-size: var(--font-size-14, 14px);
+}
+
 .action-keeper-groups {
   display: flex;
   flex-direction: column;
@@ -76,12 +96,6 @@
   border-style: dashed;
 }
 
-.action-keeper-slot:disabled {
-  cursor: not-allowed;
-  opacity: 0.4;
-  text-decoration: none;
-}
-
 /* Compact mode: a plain circle, filled when available, hollow when used. No icon or text. */
 .action-keeper-slot.is-compact {
   width: 1.75rem;
@@ -116,18 +130,23 @@
 }
 
 .action-keeper-settings {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
+  display: grid;
+  grid-template-columns: auto max-content;
+  align-items: center;
+  column-gap: 0.75rem;
+  row-gap: 0.45rem;
   padding: 0.4rem 0.5rem;
   border-top: 1px solid var(--color-border-light-tertiary, #7a7971);
 }
 
-.action-keeper-count-field,
-.action-keeper-checkbox-field {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
+.action-keeper-count-label {
   font-size: var(--font-size-12, 12px);
+}
+
+.action-keeper-count-select {
+  width: 3.5rem;
+  padding: 0.1rem 0.25rem;
+  text-align: center;
+  text-align-last: center;
+  justify-self: end;
 }

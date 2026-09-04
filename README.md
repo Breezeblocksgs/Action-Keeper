@@ -1,52 +1,20 @@
 # Action Keeper
 
-Compact, player-only action tracker for Foundry VTT combat (Main Action / Bonus Action / Reaction / Movement). Manual toggles only — no automation, no reads of D&D5e item/actor data.
+Action Keeper is a compact combat action tracker for Foundry Virtual Tabletop. It gives every token its own simple panel for manually tracking Main Action, Bonus Action, Reaction, and Movement availability during combat — nothing is detected or automated, so it works with any system or house rule.
 
 Author: Pedro Henrique Cesar Godoi Braz ([github.com/pedrocgb](https://github.com/pedrocgb/))
 
-Targets **Foundry VTT v14** (verified against the locally installed build: generation 14, build 367, stable) and **D&D5e 5.3.3** (verified installed system; module makes no dnd5e-specific calls).
+## Features
 
-## Install for local testing
+- **Per-token tracking.** Each token keeps its own independent set of action slots. Select a token you own — or, as GM, any token — to bring up its tracker. Selecting multiple tokens with Shift shows the last one selected; deselecting it falls back to another still-selected token.
+- **Four resource groups**, each with its own color and icon: Main Action, Bonus Action, Reaction, and Movement. Each group's slot count is configurable per token, from 1 to 5.
+- **Two display styles.** Labeled buttons with icon and status text, or compact filled/hollow circles — switchable globally.
+- **Automatic combat awareness.** Slots reset automatically when combat starts and at the start of each new round, for every token taking part in that combat. Tokens not currently in combat stay fully usable, with a small note that they're not participating.
+- **Multi-language panel**, switchable instantly with no reload: English (US), Português (Brasil), Español, Deutsch, and Русский.
+- **Native Foundry UI**: a standard application window (movable, minimizable) and a toggle button in the Token controls.
+- Configurable auto-open/auto-close behavior around combat, and shared settings available to the GM in Foundry's own Game Settings menu.
 
-This repo is not inside Foundry's User Data directory. To test:
+## Requirements
 
-```bash
-ln -s "/home/pedrohcg/Área de trabalho/foundry-modules/action-keeper" \
-      "/home/pedrohcg/.local/share/FoundryVTT/Data/modules/action-keeper"
-```
-
-(A symlink named exactly `action-keeper` is required — Foundry matches the folder name to `module.json`'s `id`.) Then enable **Action Keeper** in a world's Module Management, as a non-GM player.
-
-## Automated tests (pure logic only)
-
-```bash
-npm test
-# or: node --test tests/*.test.mjs
-```
-
-18 tests cover `scripts/state.mjs` (slot/count logic) and `scripts/combat-transition.mjs` (reset/idempotency logic), with no Foundry runtime required. All 18 currently pass.
-
-## Panel language
-
-Action Keeper's own panel content (labels, statuses, settings) has its own language switcher inside the panel's Configure section — English (US), Português (Brasil), Español, Deutsch, Русский — independent of Foundry's core language and instant (no reload). This is separate from `module.json`'s `languages` declaration, which is Foundry's own localization mechanism and only affects things Foundry itself renders for this module (currently just the Scene Controls tooltip, which follows Foundry's core language setting, not the in-panel switcher).
-
-## Manual runtime test matrix (not yet executed — requires a running world with 2+ clients)
-
-- [ ] GM sees no panel, no Scene Control button, no notifications
-- [ ] Player sees Scene Control button; clicking toggles the panel
-- [ ] GM starts combat → each player's panel resets and opens/stays closed per their `Auto-open` setting
-- [ ] Two simultaneous players have independent counts/toggles
-- [ ] Advancing a turn (not round) does not reset
-- [ ] Advancing the round resets all connected players exactly once
-- [ ] Changing slot counts mid-combat preserves existing toggles
-- [ ] Closing and reopening the panel preserves current-round state
-- [ ] Refresh mid-round preserves toggles; reconnect after a round change resets correctly
-- [ ] Ending combat (`Combat.endCombat()` and manual deletion) obeys each player's `Auto-close` setting
-- [ ] Starting a second Combat gives a fresh state
-- [ ] No duplicate panel instances; minimizing/moving works; no console errors or unhandled rejections
-
-## Known limitations
-
-- Only unit tests for pure logic were executed. Full multi-client runtime behavior above has **not** been tested and must not be assumed correct until run.
-- Not published to Foundry's package listing; no release archive/manifest has been created yet.
-- All per-user settings use `scope: "client"` (browser `localStorage`), not `scope: "user"`. Verified in this build's own `common/documents/setting.mjs`: `scope: "user"` settings are stored as world `Setting` Documents, and *creating* one requires the `SETTINGS_MODIFY` permission — which regular Players don't have by default. That made every write silently fail permission for non-GM players. `client` scope has no such gate. Trade-off: tracker state is per-browser/device, not synced across devices for the same Foundry account.
+- Foundry Virtual Tabletop v14.
+- Works with any game system — the module only uses core Foundry Combat and Token APIs.

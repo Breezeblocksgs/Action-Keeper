@@ -44,22 +44,13 @@ export const DEFAULT_COUNTS = Object.freeze({
   movement: 1,
 });
 
+/** Global settings, shared world-wide, edited via Foundry's own Game Settings menu. */
 export const SETTINGS = {
-  MAIN_COUNT: "mainActionCount",
-  BONUS_COUNT: "bonusActionCount",
-  REACTION_COUNT: "reactionCount",
-  MOVEMENT_COUNT: "movementCount",
   AUTO_OPEN: "autoOpenOnCombatStart",
   AUTO_CLOSE: "autoCloseOnCombatEnd",
   LABELED_BUTTONS: "labeledButtons",
   LANGUAGE: "language",
-  STATE: "actionState",
-  MARKER: "combatMarker",
 };
 
-export const GROUP_COUNT_SETTING = {
-  main: SETTINGS.MAIN_COUNT,
-  bonus: SETTINGS.BONUS_COUNT,
-  reaction: SETTINGS.REACTION_COUNT,
-  movement: SETTINGS.MOVEMENT_COUNT,
-};
+/** Per-token data (counts/state/marker) lives in a single TokenDocument flag under this key. */
+export const FLAG_KEY = "data";

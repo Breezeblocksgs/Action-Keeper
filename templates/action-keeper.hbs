@@ -1,35 +1,47 @@
 <div class="action-keeper-panel">
-  {{#unless hasActiveCombat}}
-    <p class="action-keeper-empty">{{i18n.noActiveCombat}}</p>
+  {{#unless hasToken}}
+    <p class="action-keeper-empty">{{i18n.noToken}}</p>
   {{/unless}}
 
-  <div class="action-keeper-groups">
-    {{#each groups as |group|}}
-      <fieldset class="action-keeper-group" style="--ak-color: {{group.color}}">
-        <legend>
-          <i class="{{group.icon}}" aria-hidden="true"></i>
-          {{group.label}}
-        </legend>
-        <div class="action-keeper-slots">
-          {{#each group.slots as |slot|}}
-            <button type="button"
-                    class="action-keeper-slot {{#if slot.available}}is-available{{else}}is-used{{/if}} {{#unless ../../labeledButtons}}is-compact{{/unless}}"
-                    data-action="toggleSlot"
-                    data-group="{{group.key}}"
-                    data-index="{{slot.index}}"
-                    aria-pressed="{{slot.available}}"
-                    aria-label="{{slot.label}}"
-                    {{#unless ../../hasActiveCombat}}disabled{{/unless}}>
-              {{#if ../../labeledButtons}}
-                <i class="{{group.icon}}" aria-hidden="true"></i>
-                <span class="action-keeper-slot-status">{{slot.statusLabel}}</span>
-              {{/if}}
-            </button>
-          {{/each}}
-        </div>
-      </fieldset>
-    {{/each}}
-  </div>
+  {{#if hasToken}}
+    <div class="action-keeper-token-header">
+      {{#if tokenHeader.img}}
+        <img src="{{tokenHeader.img}}" alt="" class="action-keeper-token-portrait">
+      {{/if}}
+      <span class="action-keeper-token-name">{{tokenHeader.name}}</span>
+    </div>
+
+    {{#unless inCombat}}
+      <p class="action-keeper-empty">{{i18n.notInCombat}}</p>
+    {{/unless}}
+
+    <div class="action-keeper-groups">
+      {{#each groups as |group|}}
+        <fieldset class="action-keeper-group" style="--ak-color: {{group.color}}">
+          <legend>
+            <i class="{{group.icon}}" aria-hidden="true"></i>
+            {{group.label}}
+          </legend>
+          <div class="action-keeper-slots">
+            {{#each group.slots as |slot|}}
+              <button type="button"
+                      class="action-keeper-slot {{#if slot.available}}is-available{{else}}is-used{{/if}} {{#unless ../../labeledButtons}}is-compact{{/unless}}"
+                      data-action="toggleSlot"
+                      data-group="{{group.key}}"
+                      data-index="{{slot.index}}"
+                      aria-pressed="{{slot.available}}"
+                      aria-label="{{slot.label}}">
+                {{#if ../../labeledButtons}}
+                  <i class="{{group.icon}}" aria-hidden="true"></i>
+                  <span class="action-keeper-slot-status">{{slot.statusLabel}}</span>
+                {{/if}}
+              </button>
+            {{/each}}
+          </div>
+        </fieldset>
+      {{/each}}
+    </div>
+  {{/if}}
 
   <div class="action-keeper-footer">
     <button type="button"
@@ -44,40 +56,16 @@
 
   {{#if settingsOpen}}
     <div class="action-keeper-settings">
-      {{#each groups as |group|}}
-        <label class="action-keeper-count-field">
-          <span>{{group.label}}</span>
-          <select data-setting="count" data-group="{{group.key}}">
+      {{#if hasToken}}
+        {{#each groups as |group|}}
+          <label class="action-keeper-count-label" for="ak-count-{{group.key}}">{{group.label}}</label>
+          <select id="ak-count-{{group.key}}" class="action-keeper-count-select" data-setting="count" data-group="{{group.key}}">
             {{#each group.countOptions as |option|}}
               <option value="{{option.value}}" {{#if option.selected}}selected{{/if}}>{{option.value}}</option>
             {{/each}}
           </select>
-        </label>
-      {{/each}}
-
-      <label class="action-keeper-checkbox-field">
-        <input type="checkbox" data-action="toggleAutoOpen" {{#if autoOpen}}checked{{/if}}>
-        {{i18n.autoOpen}}
-      </label>
-
-      <label class="action-keeper-checkbox-field">
-        <input type="checkbox" data-action="toggleAutoClose" {{#if autoClose}}checked{{/if}}>
-        {{i18n.autoClose}}
-      </label>
-
-      <label class="action-keeper-checkbox-field">
-        <input type="checkbox" data-action="toggleLabeledButtons" {{#if labeledButtons}}checked{{/if}}>
-        {{i18n.labeledButtons}}
-      </label>
-
-      <label class="action-keeper-count-field">
-        <span>{{i18n.language}}</span>
-        <select data-setting="language">
-          {{#each languages as |lang|}}
-            <option value="{{lang.code}}" {{#if lang.selected}}selected{{/if}}>{{lang.flag}} {{lang.nativeName}}</option>
-          {{/each}}
-        </select>
-      </label>
+        {{/each}}
+      {{/if}}
     </div>
   {{/if}}
 </div>
