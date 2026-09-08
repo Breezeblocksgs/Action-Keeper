@@ -1,6 +1,8 @@
 # Action Keeper
 [<img src="images/buymeacoffee.png" alt="Buy Me a Coffee" width="386">](https://www.patreon.com/cw/Breezeblocksgs)
 
+Do you keep forgetting which actions your 32 monsters have already used? Do your easily distracted players return from a 30-second bathroom break with no idea whether they’ve spent their reaction? Your problems—and your players’ problems—are over! Action Keeper makes it easy to track actions, bonus actions, reactions, and even movement for every token on the battlefield!
+
 Action Keeper is a compact combat action tracker for Foundry Virtual Tabletop. It gives every token its own simple panel for manually tracking Main Action, Bonus Action, Reaction, and Movement availability during combat — nothing is detected or automated, so it works with any system or house rule.
 
 Author: Pedro Henrique Cesar Godoi Braz ([github.com/Breezeblocksgs](https://github.com/Breezeblocksgs/Action-Keeper))
