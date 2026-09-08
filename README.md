@@ -2,7 +2,9 @@
 
 Action Keeper is a compact combat action tracker for Foundry Virtual Tabletop. It gives every token its own simple panel for manually tracking Main Action, Bonus Action, Reaction, and Movement availability during combat — nothing is detected or automated, so it works with any system or house rule.
 
-Author: Pedro Henrique Cesar Godoi Braz ([github.com/pedrocgb](https://github.com/pedrocgb/))
+Author: Pedro Henrique Cesar Godoi Braz ([github.com/Breezeblocksgs](https://github.com/Breezeblocksgs/Action-Keeper))
+
+[<img src="images/buymeacoffee.png" alt="Buy Me a Coffee" width="386">](https://www.patreon.com/cw/Breezeblocksgs)
 
 ## Features
 
@@ -18,3 +20,11 @@ Author: Pedro Henrique Cesar Godoi Braz ([github.com/pedrocgb](https://github.co
 
 - Foundry Virtual Tabletop v14.
 - Works with any game system — the module only uses core Foundry Combat and Token APIs.
+
+## Compatibility
+
+Compatible with Foundry VTT v14, and likely with any game system, since it uses only core Foundry features (no system-specific APIs).
+
+## Support
+
+Found a bug? Report it on the [issue tracker](https://github.com/Breezeblocksgs/Action-Keeper/issues).
