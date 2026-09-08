@@ -1,12 +1,10 @@
 # Action Keeper
+[<img src="images/buymeacoffee.png" alt="Buy Me a Coffee" width="386">](https://www.patreon.com/cw/Breezeblocksgs)
 
 Action Keeper is a compact combat action tracker for Foundry Virtual Tabletop. It gives every token its own simple panel for manually tracking Main Action, Bonus Action, Reaction, and Movement availability during combat — nothing is detected or automated, so it works with any system or house rule.
 
-Author: Pedro Henrique Cesar Godoi Braz ([github.com/Breezeblocksgs](https://github.com/Breezeblocksgs/Action-Keeper))
-
-[<img src="images/buymeacoffee.png" alt="Buy Me a Coffee" width="386">](https://www.patreon.com/cw/Breezeblocksgs)
-
 ## Features
+![Demo](https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExaHczemx0eW9va3Nlano2anBubmNzcHQxcHV1M3R2aDkwcWYyY2VlbSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/KV65RqzfzL5Tom46kW/giphy.gif)
 
 - **Per-token tracking.** Each token keeps its own independent set of action slots. Select a token you own — or, as GM, any token — to bring up its tracker. Selecting multiple tokens with Shift shows the last one selected; deselecting it falls back to another still-selected token.
 - **Four resource groups**, each with its own color and icon: Main Action, Bonus Action, Reaction, and Movement. Each group's slot count is configurable per token, from 1 to 5.
