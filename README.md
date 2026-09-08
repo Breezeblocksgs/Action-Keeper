@@ -3,6 +3,17 @@
 
 Action Keeper is a compact combat action tracker for Foundry Virtual Tabletop. It gives every token its own simple panel for manually tracking Main Action, Bonus Action, Reaction, and Movement availability during combat — nothing is detected or automated, so it works with any system or house rule.
 
+Author: Pedro Henrique Cesar Godoi Braz ([github.com/Breezeblocksgs](https://github.com/Breezeblocksgs/Action-Keeper))
+
+## Installation
+
+1. In Foundry, go to **Add-on Modules** → **Install Module**.
+2. Paste this manifest URL into the **Manifest URL** field:
+   ```
+   https://github.com/Breezeblocksgs/Action-Keeper/releases/latest/download/module.json
+   ```
+3. Click **Install**, then enable Action Keeper in your world's module settings.
+
 ## Features
 ![Demo](https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExaHczemx0eW9va3Nlano2anBubmNzcHQxcHV1M3R2aDkwcWYyY2VlbSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/KV65RqzfzL5Tom46kW/giphy.gif)
 
